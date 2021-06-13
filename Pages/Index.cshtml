@@ -3,84 +3,38 @@
 @{
     ViewData["Title"] = "Home page";
 }
+<!-- Page container -->
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <h5>LoginToYourAccount <small>EnterYourCredentials</small></h5>
 </div>
-
-
-<!-- Main navbar -->
-<div class="navbar navbar-inverse">
-    @*<div class="navbar-header">
-        <a class="navbar-brand" href="#"><img src="~/Content/images/logo_light_white.png" alt=""></a>
-    </div>*@
-</div>
-<!-- /main navbar -->
-<!-- Page container -->
-<div class="page-container">
-
-    <!-- Page content -->
-    <div class="page-content">
-
-        <!-- Main content -->
-        <div class="content-wrapper">
-
-            <!-- Content area -->
-            <div class="content pb-20">
-                <!-- login form -->
-                @*<form action="." method="post">*@
-                    <div class="panel panel-body login-form">
-                        <div class="text-center">
-                            <div class="icon-object border-warning-400 text-warning-400"><i class="icon-people"></i></div>
-                            <h5 class="content-group-lg">LoginToYourAccount <small class="display-block">EnterYourCredentials</small></h5>
-                        </div>
-                        <div class="form-group has-feedback has-feedback-left">
-                            @*@Html.TextBox("Username", Model.Username, new { @id = "txtusername", @autocomplete = "off", @class = "form-control input-xs" , placeholder = "Username" , autofocus="True" })*@
-                            <input class="form-control" placeholder="Username" name="username" type="text" id="txtusername" autofocus>
-                            <div class="form-control-feedback">
-                                <i class="icon-user text-muted"></i>
-                            </div>
-                        </div>
-                        <div class="form-group has-feedback has-feedback-left">
-                            @*@Html.TextBox("Password", Model.Password, new { @id = "txtpassword", @autocomplete = "off", @class = "form-control input-xs" , placeholder = "Password", type = "password" })*@
-                            <input class="form-control" placeholder="Password" name="password" type="password" id="txtpassword" value="">
-                            <div class="form-control-feedback">
-                                <i class="icon-lock2 text-muted"></i>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn bg-blue btn-block" onclick="Callajaxlogin()">Login <i class="icon-arrow-right14 position-right"></i></button>
-                        </div>
-                    </div>
-               @* </form>*@
-
-                <!-- Footer -->
-                <div class="footer text-muted text-center">
-                   
-                </div>
-                <!-- /footer -->
-            </div>
-            <!-- /content area -->
-
-        </div>
-        <!-- /main content -->
-
+<div class="form-group">
+    @Html.TextBox("Username", Model.Username, new { @id = "txtUsername", @autocomplete = "off", @class = "form-control input-xs", placeholder = "Username", autofocus = "True" })
+    <div>
+        <i class="text-muted"></i>
     </div>
-    <!-- /page content -->
-
 </div>
-<!-- /page container -->
+<div class="form-group">
+    @Html.TextBox("Password", Model.Password, new { @id = "txtPassword", @autocomplete = "off", @class = "form-control input-xs", placeholder = "Password", type = "password" })
+    <div>
+        <i class="text-muted"></i>
+    </div>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-primary btn-block" onclick="login()">Login</button>
+</div>
+
 
 <div id="dvPostItems" style="font-size:24px;">
 </div>
 
 <script type="text/javascript">
 
-    function Callajaxlogin() {
+    function login() {
         var test = {}
-        test.Username= $("#txtusername").val();
-        test.Password = $("#txtpassword").val();
+        test.Username = $("#txtUsername").val();
+        test.Password = $("#txtPassword").val();
         $.ajax({
             type: "POST",
             url: "http://localhost:4000/api/Users/Authenticate",
@@ -92,21 +46,21 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-                var resdata = response;
+                var resData = response;
                 sessionStorage.setItem('Token',
-                    JSON.stringify(resdata['Token'])
-                    );
-                if (resdata['Token'] != null) {
-                    window.location.href = '/Privacy';
+                    JSON.stringify(resData['Token'])
+                );
+                if (resData['Token'] != null) {
+                    window.location.href = '/Main/Invoice';
                 }
-                
+
             },
             failure: function (response) {
                 alert(response);
             }
         });
-           // 
-        }
+        //
+    }
 
 
 </script>

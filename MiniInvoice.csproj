@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Model">
-      <HintPath>..\..\Model\bin\Debug\netcoreapp3.1\Model.dll</HintPath>
-    </Reference>
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>
