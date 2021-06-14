@@ -9,6 +9,8 @@ namespace MiniInvoice.Pages.Main
 {
     public class InvoiceModel : PageModel
     {
+
+        public string StartDate { get; set; }
         public void OnGet()
         {
         }

@@ -1,140 +1,1 @@
-﻿@page
-@model InvoiceModel
-@{
-}
-
-
-<div class="row">
-    <div class="col-md-8">
-        <span class="badge badge-success" style="width: fit-content; height: fit-content;">PAID</span>
-        <label><h3>Bill</h3></label>
-        <div class="row">
-            <div class="col-md-10">
-                @Html.TextBox("staticText", "", new { @id = "staticText", @autocomplete = "off", @class = "form-control col-md-10", placeholder = "Please find attached your invoice. Thank you for timely payment" })
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <img src="@Url.Content("~/images/bukalapakLogo.png")" alt="tbd" style="width: 170px; height: 100px" />
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-4">
-        Invoice. No
-        <div class="col-auto">
-            <label class="sr-only" for="inlineFormInputGroup">Username</label>
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">#</div>
-                </div>
-                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Invoice">
-            </div>
-        </div>
-    </div>
-    <div class="col-4">
-        Language
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-4">
-        Language
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown button
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<fieldset>
-    <legend>Sample submission</legend>
-    <table id="submissionTable" class="table table-bordered">
-        <thead>
-            <tr>
-                <td>Sample ID</td>
-                <td>Additional Comments</td>
-                <td>Acid-stable amino acids</td>
-            </tr>
-        </thead>
-
-        <tr id="tablerow0">
-            <td>
-                <div class="editor-field">
-                    <input class="text-box single-line" name="ClientSampleID[0]" type="text" value="" required="required" />
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    <input class="text-box single-line" name="AdditionalComments[0]" type="text" value="" required="required" />
-                </div>
-            </td>
-            <td>
-                <div class="editor-field">
-                    <input class="text-box single-line" name="AcidStables[0]" type="text" value="" />
-                </div>
-            </td>
-            <td>
-                <button type="button" class="btn btn-primary" onclick="removeTr(0);">Delete</button>
-            </td>
-            <td></td>
-        </tr>
-
-    </table>
-    <p>
-        <button id="add" type="button" class="btn btn-primary">Add</button>
-    </p>
-    <hr />
-
-    <p>
-        <input type="submit" value="Create" class="btn btn-default" />
-    </p>
-</fieldset>
-
-<script src="~/lib/jquery/dist/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
-
-    var counter = 1;
-
-    $(function () {
-        $('#add').click(function () {
-            $('<tr id="tablerow' + counter + '"><td>' +
-                '<input type="text" class="text-box single-line" name="ClientSampleID[' + counter + ']" value="" required="required" />' +
-                '</td>' +
-                '<td>' +
-                '<input type="text" class="text-box single-line" name="AdditionalComments[' + counter + ']" value="" required="required" />' +
-                '</td>' +
-                '<td>' +
-                '<input type="text" class="text-box single-line" name="AcidStables[' + counter + ']" value="" required="required" />' +
-                '</td>' +
-                '<td>' +
-                '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +
-                '</td>' +
-                '</tr>').appendTo('#submissionTable');
-            counter++;
-            return false;
-        });
-    });
-
-    function removeTr(index) {
-        if (counter > 1) {
-            $('#tablerow' + index).remove();
-            counter--;
-        }
-        return false;
-    }
-
-</script>
+﻿@page@model InvoiceModel@{ }<div class="row">    <div class="col-md-8">        <span class="badge badge-success" style="width: fit-content; height: fit-content;">PAID</span>        <label><h3>Bill</h3></label>        <div class="row">            <div class="col-md-10">                @Html.TextBox("staticText", "", new { @id = "staticText", @autocomplete = "off", @class = "form-control col-md-10", placeholder = "Please find attached your invoice. Thank you for timely payment" })            </div>        </div>    </div>    <div class="col-md-4">        <img src="@Url.Content("~/images/bukalapakLogo.png")" alt="tbd" style="width: 170px; height: 100px" />    </div></div><div class="row">    <div class="col-4">        Invoice. No        <div class="col-auto">            <label class="sr-only" for="inlineFormInputGroup">Username</label>            <div class="input-group mb-2">                <div class="input-group-prepend">                    <div class="input-group-text">#</div>                </div>                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Invoice">            </div>        </div>    </div>    <div class="col-4">        Language        <div class="dropdown">            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                Dropdown button            </button>            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">                <a class="dropdown-item" href="#">Action</a>                <a class="dropdown-item" href="#">Another action</a>                <a class="dropdown-item" href="#">Something else here</a>            </div>        </div>    </div>    <div class="col-4">        Currency        <div class="dropdown">            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                Dropdown button            </button>            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">                <a class="dropdown-item" href="#">Action</a>                <a class="dropdown-item" href="#">Another action</a>                <a class="dropdown-item" href="#">Something else here</a>            </div>        </div>    </div></div><hr /><div class="row">    <div class="col-4 themed-grid-col">        From        <div class="btn-group">            <input id="searchinput" type="search" class="form-control">            <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>        </div>    </div>    <div class="col-4"></div>    <div class="col-4 themed-grid-col">        Date        <div class="form-group input-group-sm">            <input type="text" id="txtSelectedDate" name="SelectedDate" class="form-control"/>        </div>        Invoice Due        <div class="form-group input-group-sm">            @Html.DropDownList("item", new SelectList(new[] {""}),                new {@class = "btn btn-secondary dropdown-toggle form-control"})        </div>    </div></div><div class="row">    <div class="col-4 themed-grid-col">        To        <div class="btn-group">            <input id="searchinput" type="search" class="form-control">            <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>        </div>    </div>    <div class="col-4"></div>    <div class="col-4 themed-grid-col">        Purchase Order Number        <div class="form-group input-group-sm">            <input type="text" id="txtInvoicePopUP" name="invPopUp" class="form-control" />        </div>    </div></div><hr/><fieldset>    <table id="submissionTable" class="table ">        <thead>            <tr>                <td>Sample ID</td>                <td>Additional Comments</td>                <td>Acid-stable amino acids</td>            </tr>        </thead>        <tr id="tablerow0">            <td>                <div class="editor-field">                    <div id="editor"></div>                </div>            </td>            <td>                <div class="editor-field">                    <input class="text-box single-line" name="AdditionalComments[0]" type="text" value="" required="required" />                </div>                <div class="editor-field">                    <input class="text-box single-line" name="AdditionalComments[0]" type="text" value="" required="required" />                </div>            </td>            <td>                <div class="editor-field">                    <input class="text-box single-line" name="AcidStables[0]" type="text" value="" />                </div>            </td>        </tr>    </table>    <p>        <button id="add" type="button" class="btn btn-primary">Add</button>    </p>    <hr />    <p>        <input type="submit" value="Create" class="btn btn-default" />    </p></fieldset><link rel="stylesheet" href="~/lib/jquery-ui-1.12.1/jquery-ui.css" /><script src="~/lib/ckeditor5-build-classic/ckeditor.js"></script><script src="~/lib/jquery/dist/jquery-3.6.0.min.js"></script><script src="~/lib/jquery-ui-1.12.1/jquery-ui.js"></script><script>    ClassicEditor        .create( document.querySelector( '#editor' ) )        .catch( error => {            console.error( error );        } );</script><script type="text/javascript">    //Data Load from back    function langLoad(parameters) {        $.ajax({            type: 'POST',            url: "urlnya",            data: $("#locid").serialize(), //token here            success: function (data) {                $($.parseJSON(data.msg)).map(function () {                    return $('<option>').val(this.value).text(this.label);                }).appendTo('#combobox');            },            error: function (XMLHttpRequest, textStatus, errorThrown) {                alert(textStatus);            },            dataType: "json"        });    }    function currencyLoad(parameters) {        $.ajax({            type: 'POST',            url: "urlnya",            data: $("#locid").serialize(), //token here            success: function (data) {                $($.parseJSON(data.msg)).map(function () {                    return $('<option>').val(this.value).text(this.label);                }).appendTo('#combobox');            },            error: function (XMLHttpRequest, textStatus, errorThrown) {                alert(textStatus);            },            dataType: "json"        });    }    //    $(document).ready(function () {        var numbers = [1, 2, 3, 4, 5];        var option = '';        for (var i = 0; i < numbers.length; i++) {            option += '<option value="' + numbers[i] + '">' + numbers[i] + '</option>';        }        $('#items').append(option);    });    $('#txtSelectedDate').datepicker({        dateFormat: 'yy-mm-dd'    });    var counter = 1;    $(function () {        $('#add').click(function () {            $('<tr id="tablerow' + counter + '"><td>' +                '<input type="text" class="text-box single-line" name="ClientSampleID[' + counter + ']" value="" required="required" />' +                '</td>' +                '<td>' +                '<input type="text" class="text-box single-line" name="AdditionalComments[' + counter + ']" value="" required="required" />' +                '</td>' +                '<td>' +                '<input type="text" class="text-box single-line" name="AcidStables[' + counter + ']" value="" required="required" />' +                '</td>' +                '<td>' +                '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +                '</td>' +                '</tr>').appendTo('#submissionTable');            counter++;            return false;        });    });    function removeTr(index) {        if (counter > 1) {            $('#tablerow' + index).remove();            counter--;        }        return false;    }    $("#searchclear").click(function () {        $("#searchinput").val('');    });</script>
