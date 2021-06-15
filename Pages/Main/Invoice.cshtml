@@ -138,7 +138,7 @@
             <div class="col-2">Sub Total</div>
             <div class="col-2" themed-grid-col">
                 <div class="form-group input-group-sm" style="text-align: right;">
-                    <label id="lblsubTotal">x</label>
+                    <label id="lblsubTotal">0</label>
                 </div>
 
             </div>
@@ -160,7 +160,7 @@
             <div class="col-2">Sub Total</div>
             <div class="col-2" themed-grid-col">
                 <div class="form-group input-group-sm" style="text-align: right;">
-                    <label id="lblDiscount">y</label>
+                    <label id="lblDiscount">0</label>
                 </div>
             </div>
         </div>
@@ -180,7 +180,7 @@
             <div class="col-2"><b>Total<label id="lblCurrencyInitial"></label></b></div>
             <div class="col-2" themed-grid-col">
                 <div class="form-group input-group-sm" style="text-align: right;">
-                    <label id="lblTotalAll">z</label>
+                    <label id="lblTotalAll">0</label>
                 </div>
             </div>
         </div>
@@ -211,12 +211,11 @@
             <div class="modal-body">
                 <div class="row">
                     <fieldset>
-                        <table id="detailTable" class="table ">
+                        <table id="detailTablePOSelect" class="table ">
 
                             <tr>
                                 <td><b>Select     </b></td>
-                                <td><b>Quantity </b></td>
-                                <td><b>Rate     </b></td>
+                                <td><b>PO_Number </b></td>
                                 <td><b>Amount   </b></td>
                             </tr>
 
@@ -224,85 +223,22 @@
                             <tr id="tablerow0">
                                 <td>
                                     <div class="editor-field">
-                                        <div id="editor0"></div>
+                                        select
                                     </div>
                                 </td>
                                 <td>
                                     <div class="editor-field">
-                                        <input class="text-box single-line" id="txtTbl_Qty[0]" type="text" value="" required="required" />
+                                        @Html.Label("lbl_Modal_PO_Number","", new {@id= "lbl_Modal_PO_Number" })
                                     </div>
                                 </td>
                                 <td>
                                     <div class="editor-field">
-                                        <input class="text-box single-line" id="txtTbl_Rate[0]" type="text" value="" required="required" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="editor-field">
-                                        <input class="text-box single-line" name="txtTbl_Amount[0]" type="text" value="" required="required" />
+                                        @Html.Label("lbl_Modal_Amount", "", new { @id = "lbl_Modal_Amount" })
                                     </div>
                                 </td>
                             </tr>
 
                         </table>
-
-                        <div class="row">
-                            <div class="col-8 themed-grid-col">
-                                <button id="add" type="button" class="btn btn-primary">Add</button>
-                            </div>
-                            <div class="col-2">Sub Total</div>
-                            <div class="col-2" themed-grid-col">
-                                <div class="form-group input-group-sm" style="text-align: right;">
-                                    <label id="lblsubTotal">x</label>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-8">
-                            </div>
-                            <div class="col-4">
-                                <hr />
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-8 themed-grid-col">
-
-                            </div>
-                            <div class="col-2">Sub Total</div>
-                            <div class="col-2" themed-grid-col">
-                                <div class="form-group input-group-sm" style="text-align: right;">
-                                    <label id="lblDiscount">y</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-8">
-                            </div>
-                            <div class="col-4">
-                                <hr />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-8 themed-grid-col">
-
-                            </div>
-                            <div class="col-2"><b>Total<label id="lblCurrencyInitial"></label></b></div>
-                            <div class="col-2" themed-grid-col">
-                                <div class="form-group input-group-sm" style="text-align: right;">
-                                    <label id="lblTotalAll">z</label>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <hr />
-
 
                     </fieldset>
                 </div>
@@ -334,8 +270,30 @@
 
 <script type="text/javascript">
 
+    var strImageLogo = '';
 
     //Data Load from back
+
+    function poNumberLoad() {
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:4000/api/po",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+
+    }
+
+
     function langLoad() {
 
         $.ajax({
@@ -484,6 +442,7 @@
 
         var header = {}
 
+        //Param untuk update
         if ($('PO_H_ID').val() != '') {
             header.PO_H_ID = $('PO_H_ID').val();
         } else {
@@ -497,12 +456,56 @@
         header.InvoiceDue = $('#cboInvoice').select().val();
         header.PO_Number = $('#txtInvoicePopUP').val();
         header.Inv_Number = $('#txtInvNo').val();
+        header.Logo = strImageLogo;
+        header.Language_ID = $('#cboLanguage').val();
+        header.Name_Customer = $('#cboCustomer').val();
 
 
 
 
-        //$('#cboLanguage').select(this['Inv_Number']);
-        //$('#cboCurrency').val(this['Inv_Number']);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:4000/api/Users/Authenticate",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: JSON.stringify(header),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                var resData = response;
+
+                if (resData['message'] != 'Unauthorized') {
+                    //alert(resData['message']);
+                    saveDataDetail(resData['respoutGUID']);
+                }
+
+                
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+
+    function saveDataDetail(PO_H_ID) {
+
+        var detail = {}
+
+        //Param untuk update
+        if ($('PO_H_ID').val() != '') {
+            header.PO_H_ID = $('PO_H_ID').val();
+        } else {
+            header.PO_H_ID = PO_H_ID;
+        }
+
+        detail.SubTotal = $('#lblsubTotal').text();
+        detail.Discount_Name = $('#txtAddressFrom').val();
+        detail.Discount = $('#lblAddresTo').text();
+        detail.Total = $('#txtSelectedDate').val();
+        
 
 
 
@@ -531,6 +534,7 @@
         });
     }
 
+
     //
 
 
@@ -539,14 +543,7 @@
 
 
     $(document).ready(function () {
-        var numbers = [1, 2, 3, 4, 5];
-        var option = '';
-        for (var i = 0; i < numbers.length; i++) {
-            option += '<option value="' + numbers[i] + '">' + numbers[i] + '</option>';
-        }
-        $('#items').append(option);
-
-
+       
         langLoad();
         currencyLoad();
         customerLoad();
@@ -602,6 +599,8 @@
             //alert(e[1]);
             this.change();
             $('#imgLogo').prop('src', '/images/' + e[1] + 'Logo' + '.png');
+
+            strImageLogo = e[1] + 'Logo' + '.png';
         });
 
     });
