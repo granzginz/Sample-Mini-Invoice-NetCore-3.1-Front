@@ -9,7 +9,7 @@
         <label><h3>Bill</h3></label>
         <div class="row">
             <div class="col-md-10">
-                @Html.TextBox("staticText", "", new { @id = "staticText", @autocomplete = "off", @class = "form-control col-md-10", placeholder = "Please find attached your invoice. Thank you for timely payment" , @readonly="True"})
+                @Html.TextBox("staticText", "", new { @id = "staticText", @autocomplete = "off", @class = "form-control col-md-10", placeholder = "Please find attached your invoice. Thank you for timely payment", @readonly = "True" })
             </div>
         </div>
     </div>
@@ -80,19 +80,19 @@
         <div class="col-md-10">
             @Html.DropDownList("cboCustomer", new SelectList(new[] { "" }),
                 new { @class = "btn btn-secondary dropdown-toggle form-control" })
-            @Html.Label("lblAddresTo", "",new { @id= "lblAddresTo" })
+            @Html.Label("lblAddresTo", "", new { @id = "lblAddresTo" })
         </div>
     </div>
     <div class="col-4"></div>
     <div class="col-4 themed-grid-col">
         <b>Purchase Order Number</b>
         <div class="form-group input-group-sm">
-            <input type="text" id="txtInvoicePopUP" name="invPopUp" class="form-control" />
+            <input type="text" id="txtInvoicePopUP" name="invPopUp" class="form-control" onclick="$('#exampleModalCenter').modal('show');" />
         </div>
     </div>
 </div>
 
-<hr/>
+<hr />
 
 <div class="row">
     <fieldset>
@@ -192,103 +192,224 @@
     </fieldset>
 </div>
 
-    <p>
-        <input type="submit" value="Save" class="btn btn-primary" />
-    </p>
+<p>
+    <input type="submit" value="Save" class="btn btn-primary" />
+</p>
 
 
-    <link rel="stylesheet" href="~/lib/jquery-ui-1.12.1/jquery-ui.css" />
 
-    <script src="~/lib/ckeditor5-build-classic/ckeditor.js"></script>
-    <script src="~/lib/jquery/dist/jquery-3.6.0.min.js"></script>
-    <script src="~/lib/jquery-ui-1.12.1/jquery-ui.js"></script>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <fieldset>
+                        <table id="detailTable" class="table ">
 
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#editor0'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
-
-    <script type="text/javascript">
+                            <tr>
+                                <td><b>Select     </b></td>
+                                <td><b>Quantity </b></td>
+                                <td><b>Rate     </b></td>
+                                <td><b>Amount   </b></td>
+                            </tr>
 
 
-        //Data Load from back
-        function langLoad() {
+                            <tr id="tablerow0">
+                                <td>
+                                    <div class="editor-field">
+                                        <div id="editor0"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        <input class="text-box single-line" id="txtTbl_Qty[0]" type="text" value="" required="required" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        <input class="text-box single-line" id="txtTbl_Rate[0]" type="text" value="" required="required" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="editor-field">
+                                        <input class="text-box single-line" name="txtTbl_Amount[0]" type="text" value="" required="required" />
+                                    </div>
+                                </td>
+                            </tr>
 
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:4000/api/language",
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    $("#cboLanguage").empty();
-                    $.each(data, function () {
-                        $("#cboLanguage").append($("<option></option>").val(this['Initial']).html(this['Description']));
-                    });
-                },
-                failure: function (response) {
-                    alert(response);
-                }
-            });
+                        </table>
 
-        }
+                        <div class="row">
+                            <div class="col-8 themed-grid-col">
+                                <button id="add" type="button" class="btn btn-primary">Add</button>
+                            </div>
+                            <div class="col-2">Sub Total</div>
+                            <div class="col-2" themed-grid-col">
+                                <div class="form-group input-group-sm" style="text-align: right;">
+                                    <label id="lblsubTotal">x</label>
+                                </div>
 
-        function currencyLoad() {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:4000/api/currency",
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    $("#cboCurrency").empty();
-                    $.each(data, function () {
-                        $("#cboCurrency").append($("<option></option>").val(this['Initial']).html(this['Description']));
-                    });
-                },
-                failure: function (response) {
-                    alert(response);
-                }
-            });
-        }
+                            </div>
+                        </div>
 
-        function customerLoad() {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:4000/api/customer",
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    $("#cboCustomer").empty();
-                    $.each(data, function () {
-                        $("#cboCustomer").append($("<option></option>").val(this['Customer_ID'] + '_' + this['Customer_Company']).html(this['Customer_Name']));
-                    });
-                },
-                failure: function (response) {
-                    alert(response);
-                }
-            });
-        }
+                        <div class="row">
+                            <div class="col-8">
+                            </div>
+                            <div class="col-4">
+                                <hr />
+                            </div>
+                        </div>
 
-        function poDetailLoad() {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:4000/api/poDetail",
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    //alert(JSON.stringify(data));
-                    var obj = JSON.stringify(data);
-                    
 
-                    $.each(data, function () {
+                        <div class="row">
+                            <div class="col-8 themed-grid-col">
 
-                        
+                            </div>
+                            <div class="col-2">Sub Total</div>
+                            <div class="col-2" themed-grid-col">
+                                <div class="form-group input-group-sm" style="text-align: right;">
+                                    <label id="lblDiscount">y</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8">
+                            </div>
+                            <div class="col-4">
+                                <hr />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-8 themed-grid-col">
+
+                            </div>
+                            <div class="col-2"><b>Total<label id="lblCurrencyInitial"></label></b></div>
+                            <div class="col-2" themed-grid-col">
+                                <div class="form-group input-group-sm" style="text-align: right;">
+                                    <label id="lblTotalAll">z</label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <hr />
+
+
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#exampleModalCenter').modal('hide');">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<link rel="stylesheet" href="~/lib/jquery-ui-1.12.1/jquery-ui.css" />
+
+<script src="~/lib/ckeditor5-build-classic/ckeditor.js"></script>
+<script src="~/lib/jquery/dist/jquery-3.6.0.min.js"></script>
+<script src="~/lib/jquery-ui-1.12.1/jquery-ui.js"></script>
+
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor0'))
+        .catch(error => {
+            console.error(error);
+        });
+</script>
+
+<script type="text/javascript">
+
+
+    //Data Load from back
+    function langLoad() {
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:4000/api/language",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $("#cboLanguage").empty();
+                $.each(data, function () {
+                    $("#cboLanguage").append($("<option></option>").val(this['Initial']).html(this['Description']));
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+
+    }
+
+    function currencyLoad() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:4000/api/currency",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $("#cboCurrency").empty();
+                $.each(data, function () {
+                    $("#cboCurrency").append($("<option></option>").val(this['Initial']).html(this['Description']));
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+    function customerLoad() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:4000/api/customer",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $("#cboCustomer").empty();
+                $.each(data, function () {
+                    $("#cboCustomer").append($("<option></option>").val(this['Customer_ID'] + '_' + this['Customer_Company']).html(this['Customer_Name']));
+                });
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+    function poDetailLoad() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:4000/api/poDetail",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                var obj = JSON.stringify(data);
+
+
+                $.each(data, function () {
+
+
                     $('#cboCustomer').val(this['Name_Customer']);
 
                     $('#lblsubTotal').val(this['SubTotal']);
@@ -296,179 +417,209 @@
                     $('#lblCurrencyInitial').val(this['PO_Number']);
                     $('#lblTotalAll').val(this['Total']);
 
-                    });
-                },
-                failure: function (response) {
-                    alert(response);
-                }
-            });
-        }
-
-        function poHeaderLoad() {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:4000/api/poHeader",
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    
-
-                    var obj = JSON.stringify(data);
-                    
-                    
-
-                    $.each(data, function () {                   
-                        alert(this['Date']);
-                        $('#txtInvNo').val(this['Inv_Number']);
-
-                      //  alert(this['Addr_From']);
-                        $('#txtAddressFrom').val(this['Addr_From']);
-                        $('#lblAddresTo').text(this['Addr_To']);
-
-
-                        $('#txtSelectedDate').val(this['Date']);
-
-                        $('#cboInvoice').empty();
-                        $('#cboInvoice').append($("<option></option>").val(this['-']).html(this['InvoiceDue']));
-                        $('#cboLanguage').val(this['LangInitial_ID']);
-                        $('#cboCurrency').val(this['CurrInitial_ID']);
-                        
-                        $('#txtInvoicePopUP').val(this['PO_Number']);
-                    });
-                },
-                failure: function (response) {
-                    alert(response);
-                }
-            });
-        }
-
-        function saveDataHeader() {
-
-            var header = {}
-
-            header.Inv_Number = $('#txtInvNo').val();
-
-            header.Addr_From = $('#txtAddressFrom').val();
-            header.Addr_To = $('#lblAddresTo').text();
-
-            header.InvoiceDue = $('#cboInvoice').select().val();
-            //$('#cboLanguage').select(this['Inv_Number']);
-            //$('#cboCurrency').val(this['Inv_Number']);
-
-            header.PO_Number = $('#txtInvoicePopUP').val();
-
-
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:4000/api/Users/Authenticate",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("XSRF-TOKEN",
-                        $('input:hidden[name="__RequestVerificationToken"]').val());
-                },
-                data: JSON.stringify(header),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    var resData = response;
-                    
-                    if (resData['message'] != 'Unauthorized') {
-                        alert(resData['message']);
-                    }
-
-                },
-                failure: function (response) {
-                    alert(response);
-                }
-            });
-        }
-
-        //
-
-
-
-
-
-
-        $(document).ready(function () {
-            var numbers = [1, 2, 3, 4, 5];
-            var option = '';
-            for (var i = 0; i < numbers.length; i++) {
-                option += '<option value="' + numbers[i] + '">' + numbers[i] + '</option>';
+                });
+            },
+            failure: function (response) {
+                alert(response);
             }
-            $('#items').append(option);
-
-
-            langLoad();
-            currencyLoad();
-            customerLoad();
-
-            poHeaderLoad();
-            poDetailLoad();
         });
+    }
+
+    function poHeaderLoad() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:4000/api/poHeader",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+
+                var obj = JSON.stringify(data);
 
 
 
-        $('#txtSelectedDate').datepicker({
-            dateFormat: 'yy-mm-dd',
-            minDate: 0
-        });
+                $.each(data, function () {
+                    alert(this['Date']);
+                    $('#txtInvNo').val(this['Inv_Number']);
 
-        $("#txtSelectedDate").datepicker().datepicker("setDate", new Date());
-
-        var counter = 1;
-
-        $(function () {
-            $('#add').click(function () {
-                $('<tr id="tablerow' + counter + '"><td>' +
-                    '<div id="editor' + counter + '"></div>' +
-                    '<script>' +
-                    ' ClassicEditor ' +
-                    ' .create(document.querySelector(' + '\'#editor' + counter + '\')) ' +
-                    ' .catch(error => { ' +
-                    ' console.error(error); ' +
-                    ' }); ' +
-                    ' </\script> ' +
-                    '</td>' +
-                    '<td>' +
-                    '<input type="text" class="text-box single-line" id="txtTbl_Qty[' + counter + ']" value="" required="required" />' +
-                    '</td>' +
-                    '<td>' +
-                    '<input type="text" class="text-box single-line" id="txtTbl_Rate[' + counter + ']" value="" required="required" />' +
-                    '</td>' +
-                    '<td>' +
-                    '<input type="text" class="text-box single-line" id="txtTbl_Amount[' + counter + ']" value="" required="required" />' +
-                    '</td>' +
-                    '<td>' +
-                    '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +
-                    '</td>' +
-                    '</tr>').appendTo('#detailTable');
-                counter++;
-                return false;
-            });
+                    //  alert(this['Addr_From']);
+                    $('#txtAddressFrom').val(this['Addr_From']);
+                    $('#lblAddresTo').text(this['Addr_To']);
 
 
+                    $('#txtSelectedDate').val(this['Date']);
 
-            $("#cboCustomer").change(function () {
-                var e = jQuery.makeArray($('#cboCustomer').val().split('_'));
-                //alert(e[1]);
-                this.change();
-                $('#imgLogo').prop('src', '/images/' + e[1] + 'Logo' + '.png');
-            });
+                    $('#cboInvoice').empty();
+                    $('#cboInvoice').append($("<option></option>").val(this['-']).html(this['InvoiceDue']));
+                    $('#cboLanguage').val(this['LangInitial_ID']);
+                    $('#cboCurrency').val(this['CurrInitial_ID']);
 
-        });
-
-        function removeTr(index) {
-            if (counter > 1) {
-                $('#tablerow' + index).remove();
-                counter--;
+                    $('#txtInvoicePopUP').val(this['PO_Number']);
+                });
+            },
+            failure: function (response) {
+                alert(response);
             }
+        });
+    }
+
+    function saveDataHeader() {
+
+        //Template DB
+        /*
+         * [PO_H_ID]
+          ,[Currency_ID]
+          ,[Addr_From]
+          ,[Addr_To]
+          ,[Date]
+          ,[InvoiceDue]
+          ,[PO_Number]
+          ,[Inv_Number]
+          ,[Logo]
+          ,[Language_ID]
+         *
+         *
+         **/
+
+        var header = {}
+
+        if ($('PO_H_ID').val() != '') {
+            header.PO_H_ID = $('PO_H_ID').val();
+        } else {
+            header.PO_H_ID = '';
+        }
+
+        header.Currency_ID = $('#cboCurrency').val();
+        header.Addr_From = $('#txtAddressFrom').val();
+        header.Addr_To = $('#lblAddresTo').text();
+        header.Date = $('#txtSelectedDate').val();
+        header.InvoiceDue = $('#cboInvoice').select().val();
+        header.PO_Number = $('#txtInvoicePopUP').val();
+        header.Inv_Number = $('#txtInvNo').val();
+
+
+
+
+        //$('#cboLanguage').select(this['Inv_Number']);
+        //$('#cboCurrency').val(this['Inv_Number']);
+
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:4000/api/Users/Authenticate",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN",
+                    $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: JSON.stringify(header),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                var resData = response;
+
+                if (resData['message'] != 'Unauthorized') {
+                    alert(resData['message']);
+                }
+
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+    }
+
+    //
+
+
+
+
+
+
+    $(document).ready(function () {
+        var numbers = [1, 2, 3, 4, 5];
+        var option = '';
+        for (var i = 0; i < numbers.length; i++) {
+            option += '<option value="' + numbers[i] + '">' + numbers[i] + '</option>';
+        }
+        $('#items').append(option);
+
+
+        langLoad();
+        currencyLoad();
+        customerLoad();
+
+        poHeaderLoad();
+        poDetailLoad();
+    });
+
+
+
+    $('#txtSelectedDate').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0
+    });
+
+    $("#txtSelectedDate").datepicker().datepicker("setDate", new Date());
+
+    var counter = 1;
+
+    $(function () {
+        $('#add').click(function () {
+            $('<tr id="tablerow' + counter + '"><td>' +
+                '<div id="editor' + counter + '"></div>' +
+                '<script>' +
+                ' ClassicEditor ' +
+                ' .create(document.querySelector(' + '\'#editor' + counter + '\')) ' +
+                ' .catch(error => { ' +
+                ' console.error(error); ' +
+                ' }); ' +
+                ' </\script> ' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" class="text-box single-line" id="txtTbl_Qty[' + counter + ']" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" class="text-box single-line" id="txtTbl_Rate[' + counter + ']" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<input type="text" class="text-box single-line" id="txtTbl_Amount[' + counter + ']" value="" required="required" />' +
+                '</td>' +
+                '<td>' +
+                '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +
+                '</td>' +
+                '</tr>').appendTo('#detailTable');
+            counter++;
             return false;
-        }
-
-        $("#searchclear").click(function () {
-            $("#searchinput").val('');
         });
 
 
-    </script>
+
+        $("#cboCustomer").change(function () {
+            var e = jQuery.makeArray($('#cboCustomer').val().split('_'));
+            //alert(e[1]);
+            this.change();
+            $('#imgLogo').prop('src', '/images/' + e[1] + 'Logo' + '.png');
+        });
+
+    });
+
+    function removeTr(index) {
+        if (counter > 1) {
+            $('#tablerow' + index).remove();
+            counter--;
+        }
+        return false;
+    }
+
+    $("#searchclear").click(function () {
+        $("#searchinput").val('');
+    });
+
+    $('#myModal').on('hidden.bs.modal', function (e) {
+        // do something...
+    })
+
+</script>
