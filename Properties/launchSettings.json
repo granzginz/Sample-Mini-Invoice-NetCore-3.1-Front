@@ -1,7 +1,11 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/MiniInvoice",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:6048",
       "sslPort": 0
@@ -17,13 +21,13 @@
       }
     },
     "MiniInvoice": {
-      "commandName": "Project",
+      "commandName": "IIS",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
