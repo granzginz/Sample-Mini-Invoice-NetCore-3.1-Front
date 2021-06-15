@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <img src="@Url.Content("~/images/bukalapakLogo.png")" alt="tbd" style="width: 170px; height: 100px" />
+        <img src="@Url.Content("~/images/bukalapakLogo.png")" id="imgLogo" alt="tbd" style="width: 230px; height: 150px" />
     </div>
 </div>
 
@@ -255,6 +255,24 @@
             });
         }
 
+        function customerLoad() {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:4000/api/customer",
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#cboCustomer").empty();
+                    $.each(data, function () {
+                        $("#cboCustomer").append($("<option></option>").val(this['Customer_ID'] + '_' + this['Customer_Company']).html(this['Customer_Name']));
+                    });
+                },
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+        }
 
         function poDetailLoad() {
             $.ajax({
@@ -270,16 +288,8 @@
 
                     $.each(data, function () {
 
-                        $('#cboCustomer').empty();
-                        $('#cboCustomer').append($("<option></option>").val(this['-']).html(this['Name_Customer']));
-
-                    $('#txtSelectedDate').val(this['Date'].dateFormat('yy-mm-dd'));
-
-                       
-
-                       
-
-                    
+                        
+                    $('#cboCustomer').val(this['Name_Customer']);
 
                     $('#lblsubTotal').val(this['SubTotal']);
                     $('#lblDiscount').val(this['Discount']);
@@ -305,24 +315,67 @@
                     
 
                     var obj = JSON.stringify(data);
-                    alert(obj);
+                    
                     
 
                     $.each(data, function () {                   
-
+                        alert(this['Date']);
                         $('#txtInvNo').val(this['Inv_Number']);
 
-                        alert(this['Addr_From']);
+                      //  alert(this['Addr_From']);
                         $('#txtAddressFrom').val(this['Addr_From']);
                         $('#lblAddresTo').text(this['Addr_To']);
 
+
+                        $('#txtSelectedDate').val(this['Date']);
+
                         $('#cboInvoice').empty();
                         $('#cboInvoice').append($("<option></option>").val(this['-']).html(this['InvoiceDue']));
-                        //$('#cboLanguage').select(this['Inv_Number']);
-                        //$('#cboCurrency').val(this['Inv_Number']);
+                        $('#cboLanguage').val(this['LangInitial_ID']);
+                        $('#cboCurrency').val(this['CurrInitial_ID']);
                         
                         $('#txtInvoicePopUP').val(this['PO_Number']);
                     });
+                },
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+        }
+
+        function saveDataHeader() {
+
+            var header = {}
+
+            header.Inv_Number = $('#txtInvNo').val();
+
+            header.Addr_From = $('#txtAddressFrom').val();
+            header.Addr_To = $('#lblAddresTo').text();
+
+            header.InvoiceDue = $('#cboInvoice').select().val();
+            //$('#cboLanguage').select(this['Inv_Number']);
+            //$('#cboCurrency').val(this['Inv_Number']);
+
+            header.PO_Number = $('#txtInvoicePopUP').val();
+
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:4000/api/Users/Authenticate",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: JSON.stringify(header),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    var resData = response;
+                    
+                    if (resData['message'] != 'Unauthorized') {
+                        alert(resData['message']);
+                    }
+
                 },
                 failure: function (response) {
                     alert(response);
@@ -348,7 +401,8 @@
 
             langLoad();
             currencyLoad();
-            
+            customerLoad();
+
             poHeaderLoad();
             poDetailLoad();
         });
@@ -395,7 +449,12 @@
 
 
 
-
+            $("#cboCustomer").change(function () {
+                var e = jQuery.makeArray($('#cboCustomer').val().split('_'));
+                //alert(e[1]);
+                this.change();
+                $('#imgLogo').prop('src', '/images/' + e[1] + 'Logo' + '.png');
+            });
 
         });
 
