@@ -114,7 +114,7 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        <input class="text-box single-line" id="txtTbl_Qty[0]" type="text" value="" required="required" />
+                        <input class="text-box single-line" id="txtTbl_Qty[0]" type="text" value="" required="required" onkeypress="this.value=numberFormat(this.value);" />
                     </div>
                 </td>
                 <td>
@@ -124,7 +124,7 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        <input class="text-box single-line" name="txtTbl_Amount[0]" type="text" value="" required="required" />
+                        <input class="text-box single-line number" name="txtTbl_Amount[0]" type="text" value="" required="required"  onkeypress="this.value=numberFormat(this.value);"/>
                     </div>
                 </td>
             </tr>
@@ -271,6 +271,26 @@
 <script type="text/javascript">
 
     var strImageLogo = '';
+
+    // end of price text-box allow numeric and allow 2 decimal points only   
+    function numberFormat(nr) {
+        //remove the existing ,
+        var regex = /,/g;
+        nr = nr.replace(regex, '');
+        //force it to be a string
+        nr += '';
+        //split it into 2 parts  (for numbers with decimals, ex: 125.05125)
+        var x = nr.split('.');
+        var p1 = x[0];
+        var p2 = x.length > 1 ? '.' + x[1] : '';
+        //match groups of 3 numbers (0-9) and add , between them
+        regex = /(\d+)(\d{3})/;
+        while (regex.test(p1)) {
+            p1 = p1.replace(regex, '$1' + ',' + '$2');
+        }
+        //join the 2 parts and return the formatted number
+        return p1 + p2;
+    }
 
     //Data Load from back
 
@@ -576,13 +596,13 @@
                 ' </\script> ' +
                 '</td>' +
                 '<td>' +
-                '<input type="text" class="text-box single-line" id="txtTbl_Qty[' + counter + ']" value="" required="required" />' +
+                '<input type="text" class="text-box single-line" id="txtTbl_Qty[' + counter + ']" value="" required="required" onkeypress="this.value=numberFormat(this.value);"/>' +
                 '</td>' +
                 '<td>' +
                 '<input type="text" class="text-box single-line" id="txtTbl_Rate[' + counter + ']" value="" required="required" />' +
                 '</td>' +
                 '<td>' +
-                '<input type="text" class="text-box single-line" id="txtTbl_Amount[' + counter + ']" value="" required="required" />' +
+                '<input type="text" class="text-box single-line" id="txtTbl_Amount[' + counter + ']" value="" required="required" onkeypress="this.value=numberFormat(this.value);"/>' +
                 '</td>' +
                 '<td>' +
                 '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +
@@ -620,5 +640,6 @@
     $('#myModal').on('hidden.bs.modal', function (e) {
         // do something...
     })
+
 
 </script>

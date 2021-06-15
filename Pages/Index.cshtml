@@ -6,8 +6,9 @@
 <!-- Page container -->
 
 <div class="text-center">
-    
-    <h5>LoginToYourAccount <small>EnterYourCredentials</small></h5>
+    <h1>This page using jwt,</h1>
+    <h5>Dummy Username = "test" and Password = "test" <br />
+    <small>EnterYourCredentials to main page</small></h5>
 </div>
 <div class="form-group">
     @Html.TextBox("Username", Model.Username, new { @id = "txtUsername", @autocomplete = "off", @class = "form-control input-xs", placeholder = "Username", autofocus = "True" })
@@ -15,18 +16,30 @@
         <i class="text-muted"></i>
     </div>
 </div>
+<br />
 <div class="form-group">
     @Html.TextBox("Password", Model.Password, new { @id = "txtPassword", @autocomplete = "off", @class = "form-control input-xs", placeholder = "Password", type = "password" })
     <div>
         <i class="text-muted"></i>
     </div>
 </div>
+<br />
 <div class="form-group">
     <button type="submit" class="btn btn-primary btn-block" onclick="login()">Login</button>
 </div>
 
-
+<br />
 <div id="dvPostItems" style="font-size:24px;">
+    <h3>Added feature</h3>
+
+    <ul>
+        <li>
+            Datetime cannot back date
+        </li>
+        <li>
+            Datetime cannot back date
+        </li>
+    </ul>
 </div>
 
 <script type="text/javascript">
