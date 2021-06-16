@@ -617,7 +617,7 @@
         $("#cboCustomer").change(function () {
             var e = jQuery.makeArray($('#cboCustomer').val().split('_'));
             //alert(e[1]);
-            this.change();
+            //this.change();
             $('#imgLogo').prop('src', '/images/' + e[1] + 'Logo' + '.png');
 
             strImageLogo = e[1] + 'Logo' + '.png';
