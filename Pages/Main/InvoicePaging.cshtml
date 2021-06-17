@@ -1,0 +1,120 @@
+﻿@page
+@model MiniInvoice.Pages.Main.InvoicePagingModel
+@{
+}
+
+<div class="row">
+    <fieldset>
+        <table id="detailTable" class="table">
+            <thead>
+                <tr>
+                    <td><b>Select     </b></td>
+                    <td><b>Name     </b></td>
+                    <td><b>Date </b></td>
+                    <td><b>Invoice Due     </b></td>
+                    <td><b>Address   </b></td>
+                </tr>
+            </thead>
+        </table>
+
+    </fieldset>
+</div>
+
+
+
+<script src="~/lib/jquery/dist/jquery-3.5.1.js"></script>
+<script src="~/lib/DataTables/DataTables-1.10.25/js/jquery.dataTables.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        //var table = $('#example').DataTable({
+        //    "ajax": "http://localhost:4000/api/poHeader/GetPaging",
+        //    "columnDefs": [{
+        //        "targets": -1,
+        //        "data": null,
+        //        "defaultContent": "<button>Click!</button>"
+        //    }]
+        //});
+
+        //$('#example tbody').on('click', 'button', function () {
+        //    var data = table.row($(this).parents('tr')).data();
+        //    alert(data[0] + "'s salary is: " + data[5]);
+        //});
+        poPagingLoad();
+    });
+
+    function poPagingLoad() {
+        //$.ajax({
+        //    type: "GET",
+        //    url: "http://localhost:4000/api/poHeader/GetPaging",
+        //    data: {},
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: "json",
+        //    success: function (data) {
+        //        //alert(JSON.stringify(data));
+        //        var obj = JSON.stringify(data);
+
+        //        $(function () {
+        //            $.each(data, function () {
+        //                var $tr = $('<tr>').append(
+        //                    $('<td class="invisible" id="'+ this['PO_H_ID'] + '"">').text(),
+        //                    $('<td>').text(this['Name_Customer']),
+        //                    $('<td>').text(this['Date']),
+        //                    $('<td>').text(this['InvoiceDue']),
+        //                    $('<td>').text(this['Addr_From'])
+        //                ).appendTo('#detailTable');
+        //                // console.log($tr.wrap('<p>').html());
+        //            });
+        //        });
+
+        //    },
+        //    failure: function (response) {
+        //        alert(response);
+        //    }
+        //});
+
+        var table = $('#detailTable').DataTable({
+                ajax: {
+                    url: "http://localhost:4000/api/poHeader/GetPaging",
+                    type: "GET",
+                    data: function (data) {
+                        $.each(data, function (key, val) {
+                            d[val.name] = val.value;
+                        });
+                    },
+
+                },
+                columnDefs: [
+                    {
+                        orderable: false,
+                        width: '80px',
+                        targets: [0],
+                        data: "PO_H_ID",
+                        className: "text-center",
+                        render: function (data, type, full, meta) {
+                            return '<a href="/Invoice" class="text-slate-700"><img src="/lib/bootstrapIcon/icons-1.5.0/icons/box-arrow-in-down-right.svg"></i></a>';
+                        }
+                    }],
+                columns:
+                    [{
+                        "name": "PO_H_ID",
+                        "data": "PO_H_ID"
+                    }, {
+                        "name": "Name_Customer",
+                        "data": "Name_Customer"
+                    }, {
+                        "name": "Date",
+                        "data": "Date"
+                    }, {
+                        "name": "InvoiceDue",
+                        "data": "InvoiceDue"
+                    }, {
+                        "name": "Addr_From",
+                        "data": "Addr_From"
+                    }]
+                }
+            );
+
+
+    }
+</script>

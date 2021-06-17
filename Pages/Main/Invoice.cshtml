@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-md-8">
         <span class="badge bg-blue" style="width: fit-content; height: fit-content;">PAID</span>
-        <label><h3>Bill</h3></label>
+        <label>Bill</label>
         <div class="row">
             <div class="col-md-10">
                 @Html.TextBox("staticText", "", new { @id = "staticText", @autocomplete = "off", @class = "form-control col-md-10", placeholder = "Please find attached your invoice. Thank you for timely payment", @readonly = "True" })
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <img src="@Url.Content("~/images/bukalapakLogo.png")" id="imgLogo" alt="tbd" style="width: 230px; height: 150px" />
+        <img src="@Url.Content("~/images/freelancerLogo.png")" id="imgLogo" alt="tbd" style="width: 230px; height: 150px" />
     </div>
 </div>
 
@@ -253,14 +253,6 @@
 
 
 
-
-<link rel="stylesheet" href="~/lib/jquery-ui-1.12.1/jquery-ui.css" />
-
-<script src="~/lib/ckeditor5-build-classic/ckeditor.js"></script>
-<script src="~/lib/jquery/dist/jquery-3.6.0.min.js"></script>
-<script src="~/lib/jquery-ui-1.12.1/jquery-ui.js"></script>
-<script src="~/lib/MIT/stevenlevithan.com/date.format.js"></script>
-
 <script>
     ClassicEditor
         .create(document.querySelector('#editor0'))
@@ -336,7 +328,7 @@
 
     function loadDateToList() {
         var min = new Date();
-        var max = new Date(min.getFullYear(), min.getMonth(), min.getDate() + 1);
+        var max = new Date(min.getFullYear(), min.getMonth(), min.getDate() + 3);
         var available = {};
         var available_arr = [];
 
@@ -347,26 +339,29 @@
 
         $("#cboInvoice").empty();
         $.each(available, function () {
-            //alert(this);
-            $("#cboInvoice").append($("<option></option>").val(dateFormat(this[0], "yyyy-mm-dd")).html(dateFormat(this[0], "yyyy-mm-dd")));
+            //console.log(dateFormat(this, "yyyy-mm-dd"));
+            var clause = '';
+            if (dateFormat(this, "yyyy-mm-dd") == dateFormat(min, "yyyy-mm-dd")) {
+                clause = 'immediately';
+            } else {
+                clause = dateFormat(this, "yyyy-mm-dd");
+            }
+                        
+            $("#cboInvoice").append($("<option></option>").val(dateFormat(this, "yyyy-mm-dd")).html(clause));
         });
 
-
-        //for (; min <= max; min.setDate(min.getDate() + 1)) {
-        //    available[picker] = true;
-        //}
-
-        //for (var i = 0; i < disabled.length; i++) {
-        //    available[disabled[i]] = false;
-        //}
-
-
-        //for (var i in available) {
-        //    if (available[i]) available_arr.push(i);
-        //}
-
-        console.log(available);
     }
+
+
+    $('#txtSelectedDate').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0
+    });
+
+    if ($("#txtSelectedDate").val() == '') {
+        $("#txtSelectedDate").datepicker().datepicker("setDate", new Date());
+    }
+    
 
     function langLoad() {
 
@@ -458,9 +453,15 @@
     }
 
     function poHeaderLoad() {
+
+        var header = {}
+
+        //dummy
+        header.PO_H_ID = "FF358791-9947-4EAD-BB00-0738AD3CD674";
+
         $.ajax({
             type: "GET",
-            url: "http://localhost:4000/api/poHeader",
+            url: "http://localhost:4000/api/poHeader/GetSelected",
             data: {},
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -469,25 +470,24 @@
 
                 var obj = JSON.stringify(data);
 
+                alert(obj);
 
-
-                $.each(data, function () {
+               // $.each(data, function () {
                    // alert(this['Date']);
-                    $('#txtInvNo').val(this['Inv_Number']);
+                    $('#txtInvNo').val(data[0]['Inv_Number']);
 
                     //  alert(this['Addr_From']);
-                    $('#txtAddressFrom').val(this['Addr_From']);
-                    $('#lblAddresTo').text(this['Addr_To']);
+                $('#txtAddressFrom').val(data[0]['Addr_From']);
+                $('#lblAddresTo').text(data[0]['Addr_To']);
 
+                $('#txtSelectedDate').val(data[0]['Date']);
 
-                    $('#txtSelectedDate').val(this['Date']);
+                $('#cboInvoice').val(data[0]['InvoiceDue']);
+                $('#cboLanguage').val(data[0]['LangInitial_ID']);
+                $('#cboCurrency').val(data[0]['CurrInitial_ID']);
 
-                    $('#cboInvoice').val(this['InvoiceDue']);
-                    $('#cboLanguage').val(this['LangInitial_ID']);
-                    $('#cboCurrency').val(this['CurrInitial_ID']);
-
-                    $('#txtInvoicePopUP').val(this['PO_Number']);
-                });
+                $('#txtInvoicePopUP').val(data[0]['PO_Number']);
+                //});
             },
             failure: function (response) {
                 alert(response);
@@ -614,12 +614,13 @@
 
 
     $(document).ready(function () {
-       
-        langLoad();
+
+              
+
+        loadDateToList();
         currencyLoad();
         customerLoad();
-        loadDateToList();
-
+        langLoad();
 
         poHeaderLoad();
         poDetailLoad();
@@ -627,12 +628,6 @@
 
 
 
-    $('#txtSelectedDate').datepicker({
-        dateFormat: 'yy-mm-dd',
-        minDate: 0
-    });
-
-    $("#txtSelectedDate").datepicker().datepicker("setDate", new Date());
 
     var counter = 1;
 

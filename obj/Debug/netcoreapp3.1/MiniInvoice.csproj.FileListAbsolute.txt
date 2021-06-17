@@ -356,3 +356,4 @@ C:\Users\Anjar\Documents\My Appl\MiniInvoice\MiniInvoice\bin\Debug\netcoreapp3.1
 C:\Users\Anjar\Documents\My Appl\MiniInvoice\MiniInvoice\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\Anjar\Documents\My Appl\MiniInvoice\MiniInvoice\obj\Debug\netcoreapp3.1\Razor\Pages\Main\Invoice.cshtml.g.cs
 C:\Users\Anjar\Documents\My Appl\MiniInvoice\MiniInvoice\obj\Debug\netcoreapp3.1\MiniInvoice.csproj.AssemblyReference.cache
+C:\Users\Anjar\Documents\My Appl\MiniInvoice\MiniInvoice\obj\Debug\netcoreapp3.1\Razor\Pages\Main\InvoicePaging.cshtml.g.cs
