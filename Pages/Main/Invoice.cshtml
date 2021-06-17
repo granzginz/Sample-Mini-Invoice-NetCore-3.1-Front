@@ -193,7 +193,7 @@
 </div>
 
 <p>
-    <input type="submit" value="Save" class="btn btn-primary" />
+    <input type="submit" id="btnSave" value="Save" class="btn btn-primary" />
 </p>
 
 
@@ -259,6 +259,7 @@
 <script src="~/lib/ckeditor5-build-classic/ckeditor.js"></script>
 <script src="~/lib/jquery/dist/jquery-3.6.0.min.js"></script>
 <script src="~/lib/jquery-ui-1.12.1/jquery-ui.js"></script>
+<script src="~/lib/MIT/stevenlevithan.com/date.format.js"></script>
 
 <script>
     ClassicEditor
@@ -313,6 +314,59 @@
 
     }
 
+    function loadCboInvoice() {
+
+    }
+
+    Date.prototype.addDays = function (days) {
+        var date = new Date(this.valueOf());
+        date.setDate(date.getDate() + days);
+        return date;
+    }
+
+    function getDates(startDate, stopDate) {
+        var dateArray = new Array();
+        var currentDate = startDate;
+        while (currentDate <= stopDate) {
+            dateArray.push(new Date(currentDate));
+            currentDate = currentDate.addDays(1);
+        }
+        return dateArray;
+    }
+
+    function loadDateToList() {
+        var min = new Date();
+        var max = new Date(min.getFullYear(), min.getMonth(), min.getDate() + 1);
+        var available = {};
+        var available_arr = [];
+
+        //alert(min);
+
+        available = getDates(min, max);
+
+
+        $("#cboInvoice").empty();
+        $.each(available, function () {
+            //alert(this);
+            $("#cboInvoice").append($("<option></option>").val(dateFormat(this[0], "yyyy-mm-dd")).html(dateFormat(this[0], "yyyy-mm-dd")));
+        });
+
+
+        //for (; min <= max; min.setDate(min.getDate() + 1)) {
+        //    available[picker] = true;
+        //}
+
+        //for (var i = 0; i < disabled.length; i++) {
+        //    available[disabled[i]] = false;
+        //}
+
+
+        //for (var i in available) {
+        //    if (available[i]) available_arr.push(i);
+        //}
+
+        console.log(available);
+    }
 
     function langLoad() {
 
@@ -345,7 +399,7 @@
             success: function (data) {
                 $("#cboCurrency").empty();
                 $.each(data, function () {
-                    $("#cboCurrency").append($("<option></option>").val(this['Initial']).html(this['Description']));
+                    $("#cboCurrency").append($("<option></option>").val(this['Currency_ID']).html(this['Description']));
                 });
             },
             failure: function (response) {
@@ -428,8 +482,7 @@
 
                     $('#txtSelectedDate').val(this['Date']);
 
-                    $('#cboInvoice').empty();
-                    $('#cboInvoice').append($("<option></option>").val(this['-']).html(this['InvoiceDue']));
+                    $('#cboInvoice').val(this['InvoiceDue']);
                     $('#cboLanguage').val(this['LangInitial_ID']);
                     $('#cboCurrency').val(this['CurrInitial_ID']);
 
@@ -441,6 +494,8 @@
             }
         });
     }
+
+
 
     function saveDataHeader() {
 
@@ -460,14 +515,14 @@
          *
          **/
 
+        
+
         var header = {}
 
         //Param untuk update
         if ($('PO_H_ID').val() != '') {
             header.PO_H_ID = $('PO_H_ID').val();
-        } else {
-            header.PO_H_ID = '';
-        }
+        } 
 
         header.Currency_ID = $('#cboCurrency').val();
         header.Addr_From = $('#txtAddressFrom').val();
@@ -485,7 +540,7 @@
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:4000/api/Users/Authenticate",
+            url: "http://localhost:4000/api/PoHeader",
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("XSRF-TOKEN",
                     $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -532,7 +587,7 @@
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:4000/api/Users/Authenticate",
+            url: "http://localhost:4000/api/PoDetail",
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("XSRF-TOKEN",
                     $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -558,15 +613,13 @@
     //
 
 
-
-
-
-
     $(document).ready(function () {
        
         langLoad();
         currencyLoad();
         customerLoad();
+        loadDateToList();
+
 
         poHeaderLoad();
         poDetailLoad();
@@ -641,5 +694,8 @@
         // do something...
     })
 
+    $('#btnSave').click(function () {
+        saveDataHeader();
+    });
 
 </script>
