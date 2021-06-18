@@ -1,5 +1,7 @@
 [![.NET](https://github.com/granzginz/Sample-Mini-Invoice-NetCore-3.1-Front/actions/workflows/dotnet.yml/badge.svg)](https://github.com/granzginz/Sample-Mini-Invoice-NetCore-3.1-Front/actions/workflows/dotnet.yml)
 
+[![CodeQL](https://github.com/granzginz/Sample-Mini-Invoice-NetCore-3.1-Front/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/granzginz/Sample-Mini-Invoice-NetCore-3.1-Front/actions/workflows/codeql-analysis.yml)
+
 # Sample-Mini-Invoice-NetCore-3.1-Front (on Development)
 Sample Mini invoice Netcore 3.1 Front
 
