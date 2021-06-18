@@ -27,51 +27,11 @@
 <script>
 
     $(document).ready(function () {
-        //var table = $('#example').DataTable({
-        //    "ajax": "http://localhost:4000/api/poHeader/GetPaging",
-        //    "columnDefs": [{
-        //        "targets": -1,
-        //        "data": null,
-        //        "defaultContent": "<button>Click!</button>"
-        //    }]
-        //});
 
-        //$('#example tbody').on('click', 'button', function () {
-        //    var data = table.row($(this).parents('tr')).data();
-        //    alert(data[0] + "'s salary is: " + data[5]);
-        //});
         poPagingLoad();
     });
 
     function poPagingLoad() {
-        //$.ajax({
-        //    type: "GET",
-        //    url: "http://localhost:4000/api/poHeader/GetPaging",
-        //    data: {},
-        //    contentType: "application/json; charset=utf-8",
-        //    dataType: "json",
-        //    success: function (data) {
-        //        //alert(JSON.stringify(data));
-        //        var obj = JSON.stringify(data);
-
-        //        $(function () {
-        //            $.each(data, function () {
-        //                var $tr = $('<tr>').append(
-        //                    $('<td class="invisible" id="'+ this['PO_H_ID'] + '"">').text(),
-        //                    $('<td>').text(this['Name_Customer']),
-        //                    $('<td>').text(this['Date']),
-        //                    $('<td>').text(this['InvoiceDue']),
-        //                    $('<td>').text(this['Addr_From'])
-        //                ).appendTo('#detailTable');
-        //                // console.log($tr.wrap('<p>').html());
-        //            });
-        //        });
-
-        //    },
-        //    failure: function (response) {
-        //        alert(response);
-        //    }
-        //});
 
         var table = $('#detailTable').DataTable({
                 ajax: {

@@ -124,7 +124,7 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        <input class="text-box single-line number" name="txtTbl_Amount[0]" type="text" value="" required="required"  onkeypress="this.value=numberFormat(this.value);"/>
+                        <input class="text-box single-line number" name="txtTbl_Amount[0]" type="text" value="" required="required" onkeypress="this.value=numberFormat(this.value);" />
                     </div>
                 </td>
             </tr>
@@ -228,7 +228,7 @@
                                 </td>
                                 <td>
                                     <div class="editor-field">
-                                        @Html.Label("lbl_Modal_PO_Number","", new {@id= "lbl_Modal_PO_Number" })
+                                        @Html.Label("lbl_Modal_PO_Number", "", new { @id = "lbl_Modal_PO_Number" })
                                     </div>
                                 </td>
                                 <td>
@@ -253,19 +253,19 @@
 
 
 
-<script>
-    ClassicEditor
-        .create(document.querySelector('#editor0'))
-        .catch(error => {
-            console.error(error);
-        });
-</script>
 
 <script type="text/javascript">
 
     var strImageLogo = '';
 
-    // end of price text-box allow numeric and allow 2 decimal points only   
+    ClassicEditor
+        .create(document.querySelector('#editor0'))
+        .catch(error => {
+            console.error(error);
+        });
+
+
+    // end of price text-box allow numeric and allow 2 decimal points only
     function numberFormat(nr) {
         //remove the existing ,
         var regex = /,/g;
@@ -346,7 +346,7 @@
             } else {
                 clause = dateFormat(this, "yyyy-mm-dd");
             }
-                        
+
             $("#cboInvoice").append($("<option></option>").val(dateFormat(this, "yyyy-mm-dd")).html(clause));
         });
 
@@ -361,7 +361,7 @@
     if ($("#txtSelectedDate").val() == '') {
         $("#txtSelectedDate").datepicker().datepicker("setDate", new Date());
     }
-    
+
 
     function langLoad() {
 
@@ -433,7 +433,6 @@
                 //alert(JSON.stringify(data));
                 var obj = JSON.stringify(data);
 
-
                 $.each(data, function () {
 
 
@@ -472,11 +471,7 @@
 
                 alert(obj);
 
-               // $.each(data, function () {
-                   // alert(this['Date']);
-                    $('#txtInvNo').val(data[0]['Inv_Number']);
-
-                    //  alert(this['Addr_From']);
+                $('#txtInvNo').val(data[0]['Inv_Number']);
                 $('#txtAddressFrom').val(data[0]['Addr_From']);
                 $('#lblAddresTo').text(data[0]['Addr_To']);
 
@@ -487,7 +482,6 @@
                 $('#cboCurrency').val(data[0]['CurrInitial_ID']);
 
                 $('#txtInvoicePopUP').val(data[0]['PO_Number']);
-                //});
             },
             failure: function (response) {
                 alert(response);
@@ -499,30 +493,12 @@
 
     function saveDataHeader() {
 
-        //Template DB
-        /*
-         * [PO_H_ID]
-          ,[Currency_ID]
-          ,[Addr_From]
-          ,[Addr_To]
-          ,[Date]
-          ,[InvoiceDue]
-          ,[PO_Number]
-          ,[Inv_Number]
-          ,[Logo]
-          ,[Language_ID]
-         *
-         *
-         **/
-
-        
-
         var header = {}
 
         //Param untuk update
         if ($('PO_H_ID').val() != '') {
             header.PO_H_ID = $('PO_H_ID').val();
-        } 
+        }
 
         header.Currency_ID = $('#cboCurrency').val();
         header.Addr_From = $('#txtAddressFrom').val();
@@ -534,8 +510,6 @@
         header.Logo = strImageLogo;
         header.Language_ID = $('#cboLanguage').val();
         header.Name_Customer = $('#cboCustomer').val();
-
-
 
 
         $.ajax({
@@ -556,7 +530,6 @@
                     saveDataDetail(resData['respoutGUID']);
                 }
 
-                
             },
             failure: function (response) {
                 alert(response);
@@ -580,10 +553,6 @@
         detail.Discount_Name = $('#txtAddressFrom').val();
         detail.Discount = $('#lblAddresTo').text();
         detail.Total = $('#txtSelectedDate').val();
-        
-
-
-
 
         $.ajax({
             type: "POST",
@@ -615,7 +584,7 @@
 
     $(document).ready(function () {
 
-              
+
 
         loadDateToList();
         currencyLoad();
@@ -664,8 +633,7 @@
 
         $("#cboCustomer").change(function () {
             var e = jQuery.makeArray($('#cboCustomer').val().split('_'));
-            //alert(e[1]);
-            //this.change();
+
             $('#imgLogo').prop('src', '/images/' + e[1] + 'Logo' + '.png');
 
             strImageLogo = e[1] + 'Logo' + '.png';
